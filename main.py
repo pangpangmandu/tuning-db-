@@ -4,7 +4,10 @@
 import csv
 import io
 
-with open('members.csv', mode='r') as inp:
+member = str(raw_input("멤버 파일 이름을 입력하세요"))+".csv"
+lesson = str(raw_input("레슨 목록 파일 이름을 입력하세요"))+".csv"
+
+with open(str(member), mode='r') as inp:
     reader = csv.reader(inp)
     dict_from_csv = {rows[0]:rows[2] for rows in reader}
 
@@ -22,7 +25,7 @@ temp.append("4성 점수")
 temp.append("날짜")
 student_row.append(temp)
 
-with open ('lessons.csv', mode='r') as inp2:
+with open (str(lesson), mode='r') as inp2:
     log_reader = csv.reader(inp2)
     for rows in log_reader :
         single_check = False
@@ -89,20 +92,20 @@ with open ('lessons.csv', mode='r') as inp2:
 
 formated = []
 
-for rr in student_row:
-    temp = []
-    # temp.append(u'{}\n'.format(rr[0]))
-    temp.append(rr[1])
-    temp.append(rr[2])
-    temp.append(rr[3])
-    temp.append(rr[4])
-    temp.append(rr[5])
-    formated.append(temp)
+# for rr in student_row:
+#     temp = []
+#     temp.append(u'{}\n'.format(rr[0]))
+#     temp.append(rr[1])
+#     temp.append(rr[2])
+#     temp.append(rr[3])
+#     temp.append(rr[4])
+#     temp.append(rr[5])
+#     formated.append(temp)
 
 
-with io.open('result.csv', mode='wt' ,encoding='utf8') as csvfile:
+with open('result.csv', mode='wt') as csvfile:
     resultwriter = csv.writer(csvfile)
-    for wt in formated :
+    for wt in student_row :
         resultwriter.writerow(wt)
         
 
