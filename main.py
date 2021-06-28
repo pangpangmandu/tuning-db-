@@ -87,10 +87,24 @@ with open ('lessons.csv', mode='r') as inp2:
             student_row.append(temp)
 
 
-with open('result.csv','w') as csvfile:
+formated = []
+
+for rr in student_row:
+    temp = []
+    # temp.append(u'{}\n'.format(rr[0]))
+    temp.append(rr[1])
+    temp.append(rr[2])
+    temp.append(rr[3])
+    temp.append(rr[4])
+    temp.append(rr[5])
+    formated.append(temp)
+
+
+with io.open('result.csv', mode='wt' ,encoding='utf8') as csvfile:
     resultwriter = csv.writer(csvfile)
-    for wt in student_row :
+    for wt in formated :
         resultwriter.writerow(wt)
+        
 
 
 
