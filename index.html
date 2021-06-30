@@ -185,11 +185,12 @@
 
                             for (uid in userdict) {
                                 // var temp = {}
-                                var temp = []
-                                console.log(uid)
-                                var tempid = uid
-                                var tempname = userdict[uid]
+                                
                                 for (var i = 0; i < result.length; i++) {
+                                    var temp = []
+                                    console.log(uid)
+                                    var tempid = uid
+                                    var tempname = userdict[uid]
                                     if (result[i]["isSolved"] == true) {
                                         // if (result[i]["sid"] == tempid) {
                                         //     temp["code"] = result[i]["problem"]["fileName"]
@@ -245,7 +246,7 @@
                             console.log(lessondict)
                         });
 
-                        reader.readAsText(upload_lesson.files[0]); // Read the uploaded file
+                        // reader.readAsText(upload_lesson.files[0]); // Read the uploaded file
                     }
                 });
             }
