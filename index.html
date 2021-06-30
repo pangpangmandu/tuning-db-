@@ -7,17 +7,39 @@
 </head>
 
 <body>
-    <p>Google Sheets API Quickstart</p>
+    <p>튜닝 학생 로그 엑셀 자동화 ver.01</p>
 
     <!--Add buttons to initiate auth sequence and sign out-->
     <button id="authorize_button" style="display: none;">Authorize</button>
     <button id="signout_button" style="display: none;">Sign Out</button>
 
+    1. db 사이트에서 최신 members를 json 형태로 다운받은 뒤 업로드 해주세요.
+    <br>
+    <br>
+
     사용자 json 업로드
+    <br>
+
     <input type="file" id="member" accept="application/JSON">
     <br>
+    <br>
+
+    2. db 사이트에서 최신 lessons를 json 형태로 다운받은 뒤 업로드 해주세요.
+    <br>
+    <br>
+
     레슨 json 업로드
+    <br>
+
     <input type="file" id="lesson" accept="application/JSON">
+
+    <br>
+    <br>
+
+    "업로드 완료" 얼럿이 뜨면 아래 버튼 클릭
+    <br>
+    <br>
+    <button id="upload_button">엑셀로 제출</button>
 
     <script type="text/javascript">
         // Client ID and API key from the Developer Console
@@ -109,28 +131,9 @@
          * Print the names and majors of students in a sample spreadsheet:
          * https://docs.google.com/spreadsheets/d/1BxiMVs0XRA5nFMdKvBdBZjgmUUqptlbs74OgvE2upms/edit
          */
-        function listMajors() {
 
-            var member = []
-
-
-            gapi.client.sheets.spreadsheets.values.get({
-                spreadsheetId: '1BXDJfxOZYsMRb97KGekem14nRonZb_uZ98nV6grT6-8',
-                range: 'members!A:Z',
-            }).then(function (response) {
-
-            });
-
-
-
-            gapi.client.sheets.spreadsheets.values.get({
-                spreadsheetId: '1BXDJfxOZYsMRb97KGekem14nRonZb_uZ98nV6grT6-8',
-                range: 'result!A:Z',
-            }).then(function (response) {
-
-            });
-        }
-
+        var userdict = {}
+        var lessondict = []
 
 
         window.addEventListener('load', function () {
@@ -138,8 +141,7 @@
 
             var upload_lesson = document.getElementById('lesson');
 
-            var userdict = {} 
-            var lessondict = {}
+
             // Make sure the DOM element exists
             if (upload_member) {
                 upload_member.addEventListener('change', function () {
@@ -150,12 +152,12 @@
                         // This event listener will happen when the reader has read the file
                         reader.addEventListener('load', function () {
                             var result = JSON.parse(reader.result); // Parse the result into an object 
-                            
-                            for(var i =0; i<result.length ; i++){
+
+                            for (var i = 0; i < result.length; i++) {
                                 var name = result[i]["name"]
-                            var sid = result[i]['_id']['$oid']
-                            userdict[sid] = name 
-                            console.log(userdict)
+                                var sid = result[i]['_id']['$oid']
+                                userdict[sid] = name
+
                             }
 
 
@@ -174,30 +176,45 @@
                         // This event listener will happen when the reader has read the file
                         reader.addEventListener('load', function () {
                             var result = JSON.parse(reader.result); // Parse the result into an object 
-                            var temp = {}
-                            console.log(result)
-                            for(var i = 0; i< result.length; i++){
-                            
-                                temp["code"] = result[i]["problem"]["fileName"]
-                            if(result[i]["hasDictation"]){
-                                temp["dictKey"] = result[i]["dictation"]["key"]
-                                temp["dictScore"] =result[i]["logs"]["0"]["score"]
-                                temp["dictFile"]= result[i]["logs"]["0"]["dictationFile"]
-                            }
-                            if(result[i]["hasSing"]){
-                                temp["singKey"] = result[i]["sing"]["key"]
-                                temp["singScore"] = result[i]["logs"]["1"]["score"] 
-                                temp["singFile"] = result[i]["logs"]["1"]["singFile"] 
-                            }
-                            if(result[i]["hasInner"]){
-                                temp["innerKey"] = result[i]["inner"]["key"]
-                                temp["innerScore"] = result[i]["logs"]["2"]["score"]
+
+                            for (uid in userdict) {
+                                var temp = {}
+                                console.log(uid)
+                                var tempid = uid
+                                var tempname = userdict[uid]
+                                for (var i = 0; i < result.length; i++) {
+                                    if (result[i]["isSolved"] == true) {
+                                        temp["name"] = tempname
+                                        console.log(result[i])
+                                        if (result[i]["sid"] == tempid) {
+                                            temp["code"] = result[i]["problem"]["fileName"]
+                                            if (result[i]["hasDictation"]) {
+                                                temp["dictKey"] = result[i]["dictation"]["key"]
+                                                temp["dictScore"] = result[i]["logs"]["0"]["score"]
+                                                temp["dictFile"] = "https://tuning-data.s3.ap-northeast-2.amazonaws.com/" + result[i]["logs"]["0"]["dictationFile"]
+
+                                            }
+                                            if (result[i]["hasSing"]) {
+                                                temp["singKey"] = result[i]["sing"]["key"]
+                                                temp["singScore"] = result[i]["logs"]["1"]["score"]
+                                                // temp["singFile"] = result[i]["logs"]["1"]["singFile"]
+                                            }
+                                            if (result[i]["hasInner"]) {
+                                                temp["innerKey"] = result[i]["inner"]["key"]
+                                                temp["innerScore"] = result[i]["logs"]["2"]["score"]
+
+                                            }
+                                            temp["isReview"] = result[i]["isReviewLesson"]
+                                            temp["updatedAt"] = result[i]["updatedAt"]["$date"]
+                                            lessondict.push(temp)
+                                        }
+
+                                    }
+
+                                }
 
                             }
-                            temp["isReview"] = result[i]["isReviewLesson"]
-                            lessondict[result[i]["sid"]] = temp;
-                            }
-                            console.log(lessondict)
+                            alert("업로드 완료")
                         });
 
                         reader.readAsText(upload_lesson.files[0]); // Read the uploaded file
@@ -207,8 +224,22 @@
 
         });
 
+    const uploadButton = document.getElementById("upload_button")
 
+    uploadButton.addEventListener("click" , event=> appendSheet())
 
+        function appendSheet() {
+
+            var member = []
+
+            gapi.client.sheets.spreadsheets.values.update({
+                spreadsheetId: '1BXDJfxOZYsMRb97KGekem14nRonZb_uZ98nV6grT6-8',
+                range: 'result!A:Z',
+                valueInputOption: "RAW"
+            }).then((response)=>{
+                alert("시트에 반영되었습니다")
+            })
+        }
 
 
     </script>
