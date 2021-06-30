@@ -53,11 +53,13 @@
 
         // Authorization scopes required by the API; multiple scopes can be
         // included, separated by spaces.
-        var SCOPES = ["https://www.googleapis.com/auth/spreadsheets",'https://www.googleapis.com/auth/drive'];
+        var SCOPES = "https://www.googleapis.com/auth/drive";
 
         var authorizeButton = document.getElementById('authorize_button');
         var signoutButton = document.getElementById('signout_button');
 
+        var CLIENT_SECRET = 'X2pgjKLHv2oooWX66pQmYBQQ'
+        var REDIRECT_URI = 'https://pangpangmandu.github.io/oauth2callback'
         /**
          *  On load, called to load the auth2 library and API client library.
          */
@@ -74,7 +76,9 @@
                 apiKey: API_KEY,
                 clientId: CLIENT_ID,
                 discoveryDocs: DISCOVERY_DOCS,
-                scope: SCOPES
+                scope: SCOPES,
+                client_secret : CLIENT_SECRET
+
             }).then(function () {
                 // Listen for sign-in state changes.
                 gapi.auth2.getAuthInstance().isSignedIn.listen(updateSigninStatus);
