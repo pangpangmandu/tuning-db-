@@ -259,21 +259,16 @@
 
             var value = [ ["what"],["what2"] ]
 
-            var data = [];
-            data.push({
-                range : 'result!A:Z',
-                value : value
-            });
-
             var body = {
-                data: data,
-                valueInputOption: "RAW"
+                values : value                
             }
             
             console.log(lessondict)
             gapi.client.sheets.spreadsheets.values.append({
                 spreadsheetId: '1BXDJfxOZYsMRb97KGekem14nRonZb_uZ98nV6grT6-8',
-                resource: body
+                resource: body,
+                range : 'result!A:Z',
+                valueInputOption: "RAW",
             }).then((response)=>{
                 alert("시트에 반영되었습니다")
             })
