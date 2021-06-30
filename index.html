@@ -271,7 +271,7 @@
             }
             
             console.log(lessondict)
-            gapi.client.sheets.spreadsheets.batchUpdate({
+            gapi.client.sheets.spreadsheets.values.append({
                 spreadsheetId: '1BXDJfxOZYsMRb97KGekem14nRonZb_uZ98nV6grT6-8',
                 resource: body
             }).then((response)=>{
