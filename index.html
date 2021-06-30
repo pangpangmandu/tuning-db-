@@ -215,6 +215,7 @@
                                         //     lessondict.push(temp)
                                         // }
                                         if (result[i]["sid"] == tempid) {
+                                            temp.push(result[i]["updatedAt"]["$date"])
                                             temp.push(tempname)
                                             temp.push(result[i]["problem"]["fileName"])
                                             if (result[i]["hasDictation"]) {
@@ -234,7 +235,6 @@
 
                                             }
                                             temp.push(result[i]["isReviewLesson"])
-                                            temp.push(result[i]["updatedAt"]["$date"])
                                             lessondict.push(temp)
                                         }
                                     }
