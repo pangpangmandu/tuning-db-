@@ -1,134 +1,221 @@
 <!DOCTYPE html>
 <html>
-  <head>
+
+<head>
     <title>Google Sheets API Quickstart</title>
     <meta charset="utf-8" />
-  </head>
-  <body>
+</head>
+
+<body>
     <p>Google Sheets API Quickstart</p>
 
     <!--Add buttons to initiate auth sequence and sign out-->
     <button id="authorize_button" style="display: none;">Authorize</button>
     <button id="signout_button" style="display: none;">Sign Out</button>
 
-    <pre id="content" style="white-space: pre-wrap;"></pre>
+    사용자 json 업로드
+    <input type="file" id="member" accept="application/JSON">
+    <br>
+    레슨 json 업로드
+    <input type="file" id="lesson" accept="application/JSON">
 
     <script type="text/javascript">
-      // Client ID and API key from the Developer Console
-      var CLIENT_ID = '119419458239-mbpho45n0oe1ls610ribfdbg1nisoqp6.apps.googleusercontent.com';
-      var API_KEY = 'AIzaSyCL6WQpkZSscsoCLUMvwF4QSSeDLRxYcbI';
+        // Client ID and API key from the Developer Console
+        var CLIENT_ID = '119419458239-mbpho45n0oe1ls610ribfdbg1nisoqp6.apps.googleusercontent.com';
+        var API_KEY = 'AIzaSyCL6WQpkZSscsoCLUMvwF4QSSeDLRxYcbI';
 
-      // Array of API discovery doc URLs for APIs used by the quickstart
-      var DISCOVERY_DOCS = ["https://sheets.googleapis.com/$discovery/rest?version=v4"];
+        // Array of API discovery doc URLs for APIs used by the quickstart
+        var DISCOVERY_DOCS = ["https://sheets.googleapis.com/$discovery/rest?version=v4"];
 
-      // Authorization scopes required by the API; multiple scopes can be
-      // included, separated by spaces.
-      var SCOPES = "https://www.googleapis.com/auth/spreadsheets.readonly";
+        // Authorization scopes required by the API; multiple scopes can be
+        // included, separated by spaces.
+        var SCOPES = "https://www.googleapis.com/auth/spreadsheets.readonly";
 
-      var authorizeButton = document.getElementById('authorize_button');
-      var signoutButton = document.getElementById('signout_button');
+        var authorizeButton = document.getElementById('authorize_button');
+        var signoutButton = document.getElementById('signout_button');
 
-      /**
-       *  On load, called to load the auth2 library and API client library.
-       */
-      function handleClientLoad() {
-        gapi.load('client:auth2', initClient);
-      }
-
-      /**
-       *  Initializes the API client library and sets up sign-in state
-       *  listeners.
-       */
-      function initClient() {
-        gapi.client.init({
-          apiKey: API_KEY,
-          clientId: CLIENT_ID,
-          discoveryDocs: DISCOVERY_DOCS,
-          scope: SCOPES
-        }).then(function () {
-          // Listen for sign-in state changes.
-          gapi.auth2.getAuthInstance().isSignedIn.listen(updateSigninStatus);
-
-          // Handle the initial sign-in state.
-          updateSigninStatus(gapi.auth2.getAuthInstance().isSignedIn.get());
-          authorizeButton.onclick = handleAuthClick;
-          signoutButton.onclick = handleSignoutClick;
-        }, function(error) {
-          appendPre(JSON.stringify(error, null, 2));
-        });
-      }
-
-      /**
-       *  Called when the signed in status changes, to update the UI
-       *  appropriately. After a sign-in, the API is called.
-       */
-      function updateSigninStatus(isSignedIn) {
-        if (isSignedIn) {
-          authorizeButton.style.display = 'none';
-          signoutButton.style.display = 'block';
-          listMajors();
-        } else {
-          authorizeButton.style.display = 'block';
-          signoutButton.style.display = 'none';
+        /**
+         *  On load, called to load the auth2 library and API client library.
+         */
+        function handleClientLoad() {
+            gapi.load('client:auth2', initClient);
         }
-      }
 
-      /**
-       *  Sign in the user upon button click.
-       */
-      function handleAuthClick(event) {
-        gapi.auth2.getAuthInstance().signIn();
-      }
+        /**
+         *  Initializes the API client library and sets up sign-in state
+         *  listeners.
+         */
+        function initClient() {
+            gapi.client.init({
+                apiKey: API_KEY,
+                clientId: CLIENT_ID,
+                discoveryDocs: DISCOVERY_DOCS,
+                scope: SCOPES
+            }).then(function () {
+                // Listen for sign-in state changes.
+                gapi.auth2.getAuthInstance().isSignedIn.listen(updateSigninStatus);
 
-      /**
-       *  Sign out the user upon button click.
-       */
-      function handleSignoutClick(event) {
-        gapi.auth2.getAuthInstance().signOut();
-      }
+                // Handle the initial sign-in state.
+                updateSigninStatus(gapi.auth2.getAuthInstance().isSignedIn.get());
+                authorizeButton.onclick = handleAuthClick;
+                signoutButton.onclick = handleSignoutClick;
+            }, function (error) {
+                appendPre(JSON.stringify(error, null, 2));
+            });
+        }
 
-      /**
-       * Append a pre element to the body containing the given message
-       * as its text node. Used to display the results of the API call.
-       *
-       * @param {string} message Text to be placed in pre element.
-       */
-      function appendPre(message) {
-        var pre = document.getElementById('content');
-        var textContent = document.createTextNode(message + '\n');
-        pre.appendChild(textContent);
-      }
-
-      /**
-       * Print the names and majors of students in a sample spreadsheet:
-       * https://docs.google.com/spreadsheets/d/1BxiMVs0XRA5nFMdKvBdBZjgmUUqptlbs74OgvE2upms/edit
-       */
-      function listMajors() {
-        gapi.client.sheets.spreadsheets.values.get({
-          spreadsheetId: '1BxiMVs0XRA5nFMdKvBdBZjgmUUqptlbs74OgvE2upms',
-          range: 'Class Data!A2:E',
-        }).then(function(response) {
-          var range = response.result;
-          if (range.values.length > 0) {
-            appendPre('Name, Major:');
-            for (i = 0; i < range.values.length; i++) {
-              var row = range.values[i];
-              // Print columns A and E, which correspond to indices 0 and 4.
-              appendPre(row[0] + ', ' + row[4]);
+        /**
+         *  Called when the signed in status changes, to update the UI
+         *  appropriately. After a sign-in, the API is called.
+         */
+        function updateSigninStatus(isSignedIn) {
+            if (isSignedIn) {
+                authorizeButton.style.display = 'none';
+                signoutButton.style.display = 'block';
+                listMajors();
+            } else {
+                authorizeButton.style.display = 'block';
+                signoutButton.style.display = 'none';
             }
-          } else {
-            appendPre('No data found.');
-          }
-        }, function(response) {
-          appendPre('Error: ' + response.result.error.message);
+        }
+
+        /**
+         *  Sign in the user upon button click.
+         */
+        function handleAuthClick(event) {
+            gapi.auth2.getAuthInstance().signIn();
+        }
+
+        /**
+         *  Sign out the user upon button click.
+         */
+        function handleSignoutClick(event) {
+            gapi.auth2.getAuthInstance().signOut();
+        }
+
+        /**
+         * Append a pre element to the body containing the given message
+         * as its text node. Used to display the results of the API call.
+         *
+         * @param {string} message Text to be placed in pre element.
+         */
+        function appendPre(message) {
+            var pre = document.getElementById('content');
+            var textContent = document.createTextNode(message + '\n');
+            pre.appendChild(textContent);
+        }
+
+        /**
+         * Print the names and majors of students in a sample spreadsheet:
+         * https://docs.google.com/spreadsheets/d/1BxiMVs0XRA5nFMdKvBdBZjgmUUqptlbs74OgvE2upms/edit
+         */
+        function listMajors() {
+
+            var member = []
+
+
+            gapi.client.sheets.spreadsheets.values.get({
+                spreadsheetId: '1BXDJfxOZYsMRb97KGekem14nRonZb_uZ98nV6grT6-8',
+                range: 'members!A:Z',
+            }).then(function (response) {
+
+            });
+
+
+
+            gapi.client.sheets.spreadsheets.values.get({
+                spreadsheetId: '1BXDJfxOZYsMRb97KGekem14nRonZb_uZ98nV6grT6-8',
+                range: 'result!A:Z',
+            }).then(function (response) {
+
+            });
+        }
+
+
+
+        window.addEventListener('load', function () {
+            var upload_member = document.getElementById('member');
+
+            var upload_lesson = document.getElementById('lesson');
+
+            var userdict = {} 
+            var lessondict = {}
+            // Make sure the DOM element exists
+            if (upload_member) {
+                upload_member.addEventListener('change', function () {
+                    // Make sure a file was selected
+                    if (upload_member.files.length > 0) {
+                        var reader = new FileReader(); // File reader to read the file 
+
+                        // This event listener will happen when the reader has read the file
+                        reader.addEventListener('load', function () {
+                            var result = JSON.parse(reader.result); // Parse the result into an object 
+                            
+                            for(var i =0; i<result.length ; i++){
+                                var name = result[i]["name"]
+                            var sid = result[i]['_id']['$oid']
+                            userdict[sid] = name 
+                            console.log(userdict)
+                            }
+
+
+                        });
+
+                        reader.readAsText(upload_member.files[0]); // Read the uploaded file
+                    }
+                });
+            }
+
+            if (upload_lesson) {
+                upload_lesson.addEventListener('change', function () {
+                    // Make sure a file was selected
+                    if (upload_lesson.files.length > 0) {
+                        var reader = new FileReader(); // File reader to read the file 
+                        // This event listener will happen when the reader has read the file
+                        reader.addEventListener('load', function () {
+                            var result = JSON.parse(reader.result); // Parse the result into an object 
+                            var temp = {}
+                            console.log(result)
+                            for(var i = 0; i< result.length; i++){
+                            
+                                temp["code"] = result[i]["problem"]["fileName"]
+                            if(result[i]["hasDictation"]){
+                                temp["dictKey"] = result[i]["dictation"]["key"]
+                                temp["dictScore"] =result[i]["logs"]["0"]["score"]
+                                temp["dictFile"]= result[i]["logs"]["0"]["dictationFile"]
+                            }
+                            if(result[i]["hasSing"]){
+                                temp["singKey"] = result[i]["sing"]["key"]
+                                temp["singScore"] = result[i]["logs"]["1"]["score"] 
+                                temp["singFile"] = result[i]["logs"]["1"]["singFile"] 
+                            }
+                            if(result[i]["hasInner"]){
+                                temp["innerKey"] = result[i]["inner"]["key"]
+                                temp["innerScore"] = result[i]["logs"]["2"]["score"]
+
+                            }
+                            temp["isReview"] = result[i]["isReviewLesson"]
+                            lessondict[result[i]["sid"]] = temp;
+                            }
+                            console.log(lessondict)
+                        });
+
+                        reader.readAsText(upload_lesson.files[0]); // Read the uploaded file
+                    }
+                });
+            }
+
         });
-      }
+
+
+
+
 
     </script>
 
-    <script async defer src="https://apis.google.com/js/api.js"
-      onload="this.onload=function(){};handleClientLoad()"
-      onreadystatechange="if (this.readyState === 'complete') this.onload()">
-    </script>
-  </body>
+    <script async defer src="https://apis.google.com/js/api.js" onload="this.onload=function(){};handleClientLoad()"
+        onreadystatechange="if (this.readyState === 'complete') this.onload()">
+        </script>
+</body>
+
 </html>
