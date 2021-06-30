@@ -180,37 +180,58 @@
                             var result = JSON.parse(reader.result); // Parse the result into an object 
 
                             for (uid in userdict) {
-                                var temp = {}
+                                // var temp = {}
+                                var temp = []
                                 console.log(uid)
                                 var tempid = uid
                                 var tempname = userdict[uid]
                                 for (var i = 0; i < result.length; i++) {
                                     if (result[i]["isSolved"] == true) {
-                                        temp["name"] = tempname
-                                        console.log(result[i])
+                                        temp.push(tempname)
+                                        // if (result[i]["sid"] == tempid) {
+                                        //     temp["code"] = result[i]["problem"]["fileName"]
+                                        //     if (result[i]["hasDictation"]) {
+                                        //         temp["dictKey"] = result[i]["dictation"]["key"]
+                                        //         temp["dictScore"] = result[i]["logs"]["0"]["score"]
+                                        //         temp["dictFile"] = "https://tuning-data.s3.ap-northeast-2.amazonaws.com/" + result[i]["logs"]["0"]["dictationFile"]
+
+                                        //     }
+                                        //     if (result[i]["hasSing"]) {
+                                        //         temp["singKey"] = result[i]["sing"]["key"]
+                                        //         temp["singScore"] = result[i]["logs"]["1"]["score"]
+                                        //         // temp["singFile"] = result[i]["logs"]["1"]["singFile"]
+                                        //     }
+                                        //     if (result[i]["hasInner"]) {
+                                        //         temp["innerKey"] = result[i]["inner"]["key"]
+                                        //         temp["innerScore"] = result[i]["logs"]["2"]["score"]
+
+                                        //     }
+                                        //     temp["isReview"] = result[i]["isReviewLesson"]
+                                        //     temp["updatedAt"] = result[i]["updatedAt"]["$date"]
+                                        //     lessondict.push(temp)
+                                        // }
                                         if (result[i]["sid"] == tempid) {
-                                            temp["code"] = result[i]["problem"]["fileName"]
+                                            temp.push(result[i]["problem"]["fileName"])
                                             if (result[i]["hasDictation"]) {
-                                                temp["dictKey"] = result[i]["dictation"]["key"]
-                                                temp["dictScore"] = result[i]["logs"]["0"]["score"]
-                                                temp["dictFile"] = "https://tuning-data.s3.ap-northeast-2.amazonaws.com/" + result[i]["logs"]["0"]["dictationFile"]
+                                                temp.push(result[i]["dictation"]["key"])
+                                                temp.push(result[i]["logs"]["0"]["score"])
+                                                temp.push("https://tuning-data.s3.ap-northeast-2.amazonaws.com/" + result[i]["logs"]["0"]["dictationFile"])
 
                                             }
                                             if (result[i]["hasSing"]) {
-                                                temp["singKey"] = result[i]["sing"]["key"]
-                                                temp["singScore"] = result[i]["logs"]["1"]["score"]
+                                                temp.push(result[i]["sing"]["key"])
+                                                temp.push(result[i]["logs"]["1"]["score"])
                                                 // temp["singFile"] = result[i]["logs"]["1"]["singFile"]
                                             }
                                             if (result[i]["hasInner"]) {
-                                                temp["innerKey"] = result[i]["inner"]["key"]
-                                                temp["innerScore"] = result[i]["logs"]["2"]["score"]
+                                                temp.push(result[i]["inner"]["key"])
+                                                temp.push(result[i]["logs"]["2"]["score"])
 
                                             }
-                                            temp["isReview"] = result[i]["isReviewLesson"]
-                                            temp["updatedAt"] = result[i]["updatedAt"]["$date"]
+                                            temp.push(result[i]["isReviewLesson"])
+                                            temp.push(result[i]["updatedAt"]["$date"])
                                             lessondict.push(temp)
                                         }
-
                                     }
 
                                 }
