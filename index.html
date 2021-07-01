@@ -158,7 +158,7 @@
                         // This event listener will happen when the reader has read the file
                         reader.addEventListener('load', function () {
                             var result = JSON.parse(reader.result); // Parse the result into an object 
-
+                            console.log(result)
                             for (var i = 0; i < result.length; i++) {
                                 var name = result[i]["name"]
                                 var sid = result[i]['_id']['$oid']
@@ -182,7 +182,7 @@
                         // This event listener will happen when the reader has read the file
                         reader.addEventListener('load', function () {
                             var result = JSON.parse(reader.result); // Parse the result into an object 
-
+                            console.log(result)
                             for (uid in userdict) {
                                 // var temp = {}
                                 
