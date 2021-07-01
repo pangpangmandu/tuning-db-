@@ -88,7 +88,6 @@
                 authorizeButton.onclick = handleAuthClick;
                 signoutButton.onclick = handleSignoutClick;
             }, function (error) {
-                appendPre(JSON.stringify(error, null, 2));
             });
         }
 
@@ -126,11 +125,7 @@
          *
          * @param {string} message Text to be placed in pre element.
          */
-        function appendPre(message) {
-            var pre = document.getElementById('content');
-            var textContent = document.createTextNode(message + '\n');
-            pre.appendChild(textContent);
-        }
+
 
         /**
          * Print the names and majors of students in a sample spreadsheet:
@@ -178,9 +173,12 @@
                 upload_lesson.addEventListener('change', function () {
                     // Make sure a file was selected
                     if (upload_lesson.files.length > 0) {
+                        console.log("file length >0")
                         var reader = new FileReader(); // File reader to read the file 
+                        console.log(reader)
                         // This event listener will happen when the reader has read the file
                         reader.addEventListener('load', function () {
+                            console.log("loaded")
                             var result = JSON.parse(reader.result); // Parse the result into an object 
                             console.log(result)
                             for (uid in userdict) {
@@ -192,28 +190,6 @@
                                     var tempid = uid
                                     var tempname = userdict[uid]
                                     if (result[i]["isSolved"] == true) {
-                                        // if (result[i]["sid"] == tempid) {
-                                        //     temp["code"] = result[i]["problem"]["fileName"]
-                                        //     if (result[i]["hasDictation"]) {
-                                        //         temp["dictKey"] = result[i]["dictation"]["key"]
-                                        //         temp["dictScore"] = result[i]["logs"]["0"]["score"]
-                                        //         temp["dictFile"] = "https://tuning-data.s3.ap-northeast-2.amazonaws.com/" + result[i]["logs"]["0"]["dictationFile"]
-
-                                        //     }
-                                        //     if (result[i]["hasSing"]) {
-                                        //         temp["singKey"] = result[i]["sing"]["key"]
-                                        //         temp["singScore"] = result[i]["logs"]["1"]["score"]
-                                        //         // temp["singFile"] = result[i]["logs"]["1"]["singFile"]
-                                        //     }
-                                        //     if (result[i]["hasInner"]) {
-                                        //         temp["innerKey"] = result[i]["inner"]["key"]
-                                        //         temp["innerScore"] = result[i]["logs"]["2"]["score"]
-
-                                        //     }
-                                        //     temp["isReview"] = result[i]["isReviewLesson"]
-                                        //     temp["updatedAt"] = result[i]["updatedAt"]["$date"]
-                                        //     lessondict.push(temp)
-                                        // }
                                         if (result[i]["sid"] == tempid) {
                                             temp.push(result[i]["updatedAt"]["$date"])
                                             temp.push(tempname)
