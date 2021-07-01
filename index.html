@@ -169,6 +169,31 @@
                 });
             }
 
+            // if (upload_lesson) {
+            //     upload_lesson.addEventListener('change', function () {
+            //         // Make sure a file was selected
+            //         if (upload_lesson.files.length > 0) {
+            //             var reader = new FileReader(); // File reader to read the file 
+
+            //             // This event listener will happen when the reader has read the file
+            //             reader.addEventListener('load', function () {
+            //                 var result = JSON.parse(reader.result); // Parse the result into an object 
+            //                 console.log(result)
+            //                 for (var i = 0; i < result.length; i++) {
+            //                     var name = result[i]["name"]
+            //                     var sid = result[i]['_id']['$oid']
+            //                     userdict[sid] = name
+
+            //                 }
+
+
+            //             });
+
+            //             reader.readAsText(upload_lesson.files[0]); // Read the uploaded file
+            //         }
+            //     });
+            // }
+
             if (upload_lesson) {
                 upload_lesson.addEventListener('change', function () {
                     // Make sure a file was selected
@@ -222,7 +247,7 @@
                             console.log(lessondict)
                         });
 
-                        // reader.readAsText(upload_lesson.files[0]); // Read the uploaded file
+                        reader.readAsText(upload_lesson.files[0]); // Read the uploaded file
                     }
                 });
             }
