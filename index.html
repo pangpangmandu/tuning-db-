@@ -224,16 +224,26 @@
                                                 temp.push(result[i]["logs"]["0"]["score"])
                                                 temp.push("https://tuning-data.s3.ap-northeast-2.amazonaws.com/" + result[i]["logs"]["0"]["dictationFile"])
 
+                                            }else{
+                                                temp.push("none")
+                                                temp.push('none')
+                                                temp.push('none')
                                             }
                                             if (result[i]["hasSing"]) {
                                                 temp.push(result[i]["sing"]["key"])
                                                 temp.push(result[i]["logs"]["1"]["score"])
                                                 // temp["singFile"] = result[i]["logs"]["1"]["singFile"]
+                                            }else{
+                                                temp.push("none")
+                                                temp.push('none')
                                             }
                                             if (result[i]["hasInner"]) {
                                                 temp.push(result[i]["inner"]["key"])
                                                 temp.push(result[i]["logs"]["2"]["score"])
 
+                                            }else{
+                                                temp.push("none")
+                                                temp.push('none')
                                             }
                                             temp.push(result[i]["isReviewLesson"])
                                             lessondict.push(temp)
