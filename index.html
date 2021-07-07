@@ -134,7 +134,7 @@
 
         var userdict = {}
         var lessondict = []
-        lessondict.push(["푼 날짜","학생 이름","문제 이름","레벨","청음 조성","청음 템포","청음 점수","청음 제출 파일","시창 조성","시창 템포","시창 점수","내청 조성","내청 템포","내청 점수","다시풀기 여부"])
+        lessondict.push(["푼 날짜","학생 이름","문제 이름","정답 파일","레벨","청음 조성","청음 템포","청음 점수","청음 제출 파일","시창 조성","시창 템포","시창 점수","내청 조성","내청 템포","내청 점수","다시풀기 여부"])
 
 
         window.addEventListener('load', function () {
@@ -218,6 +218,8 @@
                                             temp.push(result[i]["updatedAt"]["$date"])
                                             temp.push(tempname)
                                             temp.push(result[i]["problem"]["fileName"])
+                                            var filename = result[i]["problem"]["fileName"]
+                                            temp.push("https://tuning-data.s3.ap-northeast-2.amazonaws.com/problems/"+filename+".pdf")    
                                             temp.push(result[i]["problem"]["level"])
                                             if (result[i]["hasDictation"]) {
                                                 temp.push(result[i]["dictation"]["key"])
