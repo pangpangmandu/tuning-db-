@@ -134,7 +134,7 @@
 
         var userdict = {}
         var lessondict = []
-        lessondict.push(["푼 날짜","학생 이름","문제 이름","청음 조성","청음 점수","청음 제출 파일","시창 조성","시창 점수","내청 조성","내청 점수","다시풀기 여부"])
+        lessondict.push(["푼 날짜","학생 이름","문제 이름","조성","템포","청음 조성","청음 점수","청음 제출 파일","시창 조성","시창 점수","내청 조성","내청 점수","다시풀기 여부"])
 
 
         window.addEventListener('load', function () {
@@ -211,7 +211,6 @@
                                 
                                 for (var i = 0; i < result.length; i++) {
                                     var temp = []
-                                    console.log(uid)
                                     var tempid = uid
                                     var tempname = userdict[uid]
                                     if (result[i]["isSolved"] == true) {
