@@ -135,7 +135,7 @@
 
         var userdict = {}
         var lessondict = []
-        lessondict.push(["푼 날짜","학생 이름","문제 이름","정답 파일","레벨","청음 조성","청음 템포","청음 점수","청음 제출 파일","시창 조성","시창 템포","시창 점수","내청 조성","내청 템포","내청 점수","다시풀기 여부"])
+        lessondict.push(["푼 날짜","학생 이름","문제 이름","정답 파일","레벨","청음 조성","청음 템포","청음 예비박","청음 쉼표","청음 첫음","청음 M.M","청음 마디 재생 하이라이트","1-8","1-2","1-4","3-4","3-6","5-6","5-8","7-8","1-8","청음 점수","청음 제출 파일","시창 조성","시창 템포","시창 예비박","시창 쉼표","시창 점수","내청 조성","내청 템포","내청 예비박","내청 쉼표","내청 점수","다시풀기 여부"])
 
 
         window.addEventListener('load', function () {
@@ -225,32 +225,68 @@
                                             if (result[i]["hasDictation"]) {
                                                 temp.push(result[i]["dictation"]["key"])
                                                 temp.push(result[i]["dictation"]["tempo"])
+                                                temp.push(result[i]["dictation"]["isPreBeat"])
+                                                temp.push(result[i]["dictation"]["isRest"])
+                                                temp.push(result[i]["dictation"]["isFirstNote"])
+                                                temp.push(result[i]["dictation"]["isMetronome"])
+                                                temp.push(result[i]["dictation"]["isHighlight"])
+                                                temp.push(result[i]["dictation"]["sequence"][0])
+                                                temp.push(result[i]["dictation"]["sequence"][1])
+                                                temp.push(result[i]["dictation"]["sequence"][2])
+                                                temp.push(result[i]["dictation"]["sequence"][3])
+                                                temp.push(result[i]["dictation"]["sequence"][4])
+                                                temp.push(result[i]["dictation"]["sequence"][5])
+                                                temp.push(result[i]["dictation"]["sequence"][6])
+                                                temp.push(result[i]["dictation"]["sequence"][7])
+                                                temp.push(result[i]["dictation"]["sequence"][8])
                                                 temp.push(result[i]["logs"]["0"]["score"])
                                                 temp.push("https://tuning-data.s3.ap-northeast-2.amazonaws.com/" + result[i]["logs"]["0"]["dictationFile"])
-
                                             }else{
                                                 temp.push("none")
                                                 temp.push("none")
                                                 temp.push('none')
                                                 temp.push('none')
+                                                temp.push("none")
+                                                temp.push("none")
+                                                temp.push('none')
+                                                temp.push('none')
+                                                temp.push('none')
+                                                temp.push("none")
+                                                temp.push("none")
+                                                temp.push('none')
+                                                temp.push('none')
+                                                temp.push("none")
+                                                temp.push("none")
+                                                temp.push('none')
+                                                temp.push('none')
+                                                temp.push('none')
+
                                             }
                                             if (result[i]["hasSing"]) {
                                                 temp.push(result[i]["sing"]["key"])
                                                 temp.push(result[i]["sing"]["tempo"])
+                                                temp.push(result[i]["sing"]["isPreBeat"])
+                                                temp.push(result[i]["sing"]["isRest"])
                                                 temp.push(result[i]["logs"]["1"]["score"])
                                                 // temp["singFile"] = result[i]["logs"]["1"]["singFile"]
                                             }else{
                                                 temp.push("none")
                                                 temp.push('none')
                                                 temp.push('none')
+                                                temp.push('none')
+                                                temp.push("none")
 
                                             }
                                             if (result[i]["hasInner"]) {
                                                 temp.push(result[i]["inner"]["key"])
                                                 temp.push(result[i]["inner"]["tempo"])
+                                                temp.push(result[i]["inner"]["isPreBeat"])
+                                                temp.push(result[i]["inner"]["isRest"])
                                                 temp.push(result[i]["logs"]["2"]["score"])
 
                                             }else{
+                                                temp.push("none")
+                                                temp.push('none')
                                                 temp.push("none")
                                                 temp.push('none')
                                                 temp.push("none")
